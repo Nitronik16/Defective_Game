@@ -101,22 +101,6 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = true;
         }
         else { isGrounded = false; }
-
-        #region Debug Visualization
-
-        Color rayColor; 
-
-        if (isGrounded)
-        {
-            rayColor = Color.green;
-        }
-        else { rayColor = Color.red; }
-
-        Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * MoveStats.GroundDetectionRayLength, rayColor);
-        Debug.DrawRay(new Vector2(boxCastOrigin.x + boxCastSize.x / 2, boxCastOrigin.y), Vector2.down * MoveStats.GroundDetectionRayLength, rayColor);
-        Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2, boxCastOrigin.y - MoveStats.GroundDetectionRayLength), Vector2.right * boxCastSize.x, rayColor);
-
-        #endregion
     }
 
     private void CollisionChecks()
