@@ -248,6 +248,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ebdadd32ef5484998fe122540676ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MoveStats: {fileID: 11400000, guid: 3fe62cf2d71a85144a83f4b726b96926, type: 2}
+  feetCol: {fileID: 1714751185}
+  bodyCol: {fileID: 1085777537}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,7 +607,7 @@ GameObject:
   - component: {fileID: 1846536468}
   - component: {fileID: 1846536467}
   - component: {fileID: 1846536466}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Test Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
