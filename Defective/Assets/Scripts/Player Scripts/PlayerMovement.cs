@@ -183,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Air jump after coyotoe time lapsed
-        else if (jumpBufferTimer > 0f && isFalling && numberOfJumpsUsed < MoveStats.NumberOfJumpsAllowed)
+        else if (jumpBufferTimer > 0f && isFalling && numberOfJumpsUsed < MoveStats.NumberOfJumpsAllowed - 1)
         {
             InitiateJump(2);
             isFastFalling = false;
@@ -250,27 +250,68 @@ public class PlayerMovement : MonoBehaviour
                         }
                         else
                         {
-                            VerticalVelocity = -.01f;
+                            VerticalVelocity = -0.5f;
                         }
                     }
                 }
 
 
+                //Gravity on ascending but not past apex threshold
+                else
+                {
+                    VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+                    if (isPastApexThreshold)
+                    {
+                        isPastApexThreshold = false;
+                    }
+                }
+
+            }
+
+            else if (!isFastFalling)
+            {
+                VerticalVelocity += MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+            }
+
+            else if (VerticalVelocity < 0f)
+            {
+                if (!isFalling)
+                {
+                    isFalling = true;
+                }
             }
         }
-        
-
-        //apex controls
-
-        //gravity on ascending
-
-        //gravity on descending
 
         //jump cut 
+        if (!isFastFalling)
+        {
+            if (fastFallTime >= MoveStats.TimeForUpwardsCancel)
+            {
+                VerticalVelocity += MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+            }
+            else if (fastFallTime < MoveStats.TimeForUpwardsCancel)
+            {
+                VerticalVelocity = Mathf.Lerp(fastFallReleaseSpeed, 0f, (fastFallTime / MoveStats.TimeForUpwardsCancel));
+            }
+
+            fastFallTime += Time.fixedDeltaTime;
+        }
 
         //normal gravity while falling
+        if (!isGrounded && !isJumping)
+        {
+            if (!isFalling)
+            {
+                isFalling = true;
+            }
+
+            VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+        }
 
         //clamp fall speed
+        VerticalVelocity = Mathf.Clamp(VerticalVelocity, -MoveStats.MaxFallSpeed, 50f);
+
+        rb.velocity = new Vector2 (rb.velocity.x, VerticalVelocity);
 
     }
 
@@ -308,11 +349,49 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void BumpedHead()
+    {
+        Vector2 boxCastOrigin = new Vector2(feetCol.bounds.center.x, bodyCol.bounds.max.y);
+        Vector2 boxCastSize = new Vector2(feetCol.bounds.size.x * MoveStats.HeadWidth, MoveStats.HeadDetectionRayLength);
+
+        headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, MoveStats.HeadDetectionRayLength, MoveStats.GroundLayer);
+        if (headHit.collider != null)
+        {
+            bumpedHead = true;
+        }
+        else
+        {
+            bumpedHead = false;
+        }
+
+        #region Debug Visualization
+
+        if (MoveStats.DebugShowHeadBumpBox)
+        {
+            float headWidth = MoveStats.HeadWidth;
+
+            Color rayColor;
+            if (bumpedHead)
+            {
+                rayColor = Color.green;
+            }
+            else { rayColor = Color.red; }
+
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * headWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLength, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x + (boxCastSize.x / 2) * headWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLength, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * headWidth, boxCastOrigin.y + MoveStats.HeadDetectionRayLength), Vector2.right * boxCastSize.x * headWidth, rayColor);
+        }
+
+
         #endregion
+    }
+
+    #endregion
 
     private void CollisionChecks()
     {
         IsGrounded();
+        BumpedHead();
     }
 
     #endregion
