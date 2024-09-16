@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private int numberOfJumpsUsed;
 
     //apex variables
-    private float apexPoint;
+    [SerializeField] private float apexPoint;
     private float timePastApexThreshold;
     private bool isPastApexThreshold;
 
@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded)
         {
-            Move(MoveStats.GroundAcceleration, MoveStats.GroundAcceleration, InputManager.Movement);
+            Move(MoveStats.GroundAcceleration, MoveStats.GroundDeceleration, InputManager.Movement);
         }
         else
         {
@@ -144,24 +144,29 @@ public class PlayerMovement : MonoBehaviour
         //When we release the jump button
         if (InputManager.JumpWasReleased)
         {
-            jumpReleasedDuringBuffer = true;
+            if (jumpBufferTimer > 0)
+            {
+                jumpReleasedDuringBuffer = true;
+            }
+
+            if (isJumping && VerticalVelocity > 0f)
+            {
+                if (isPastApexThreshold)
+                {
+                    isPastApexThreshold = false;
+                    isFastFalling = true;
+                    fastFallTime = MoveStats.TimeForUpwardsCancel;
+                    VerticalVelocity = 0f;
+                }
+                else
+                {
+                    isFastFalling = true;
+                    fastFallReleaseSpeed = VerticalVelocity;
+                }
+            }
         }
 
-        if (isJumping && VerticalVelocity > 0f)
-        {
-            if (isPastApexThreshold)
-            {
-                isPastApexThreshold = false;
-                isFastFalling = true;
-                fastFallTime = MoveStats.TimeForUpwardsCancel;
-                VerticalVelocity = 0f;
-            }
-            else
-            {
-                isFastFalling = true;
-                fastFallReleaseSpeed = VerticalVelocity;
-            }
-        }
+      
 
         //Initiate jump with jump buffering and coyote time
         if (jumpBufferTimer > 0f && !isJumping && (isGrounded || coyoteTimer > 0f))
@@ -238,19 +243,21 @@ public class PlayerMovement : MonoBehaviour
                     if (!isPastApexThreshold)
                     {
                         isPastApexThreshold = true;
+                        Debug.Log("Changes variable");
                         timePastApexThreshold = 0f;
                     }
 
                     if (isPastApexThreshold)
                     {
-                        timePastApexThreshold += Time.deltaTime;
+                        timePastApexThreshold += Time.fixedDeltaTime;
                         if (timePastApexThreshold < MoveStats.ApexHangTime)
                         {
                             VerticalVelocity = 0f;
                         }
                         else
                         {
-                            VerticalVelocity = -0.5f;
+                            VerticalVelocity = -0.01f;
+                            Debug.Log("test");
                         }
                     }
                 }
@@ -259,10 +266,12 @@ public class PlayerMovement : MonoBehaviour
                 //Gravity on ascending but not past apex threshold
                 else
                 {
+                    Debug.Log("work");
                     VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
                     if (isPastApexThreshold)
                     {
                         isPastApexThreshold = false;
+                        Debug.Log("false");
                     }
                 }
 
@@ -271,6 +280,7 @@ public class PlayerMovement : MonoBehaviour
             else if (!isFastFalling)
             {
                 VerticalVelocity += MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                Debug.Log("fastfalling");
             }
 
             else if (VerticalVelocity < 0f)
@@ -283,8 +293,9 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //jump cut 
-        if (!isFastFalling)
+        if (isFastFalling)
         {
+            Debug.Log("reaches");
             if (fastFallTime >= MoveStats.TimeForUpwardsCancel)
             {
                 VerticalVelocity += MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
