@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public float Gravity { get; private set; }
+    public float InitialJumpVelocity { get; private set; }
+    public float AdjustedJumpHeight { get; private set; }
+
     [Header("References")]
     public PlayerMovementStats MoveStats;
     [SerializeField] private Collider2D feetCol;
@@ -54,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     {
         JumpChecks();
         CountTimers();
+        CalculateGravity();
     }
 
     private void FixedUpdate()
@@ -68,6 +73,22 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Move(MoveStats.AirAcceleration, MoveStats.AirDeceleration, InputManager.Movement);
+        }
+    }
+
+    private void CalculateGravity()
+    {
+        if (InputManager.AdrenalineIsHeld)
+        {
+            AdjustedJumpHeight = MoveStats.adrenalineJumpHeight * MoveStats.JumpHeightCompnesationFactor;
+            Gravity = -(2f * AdjustedJumpHeight) / Mathf.Pow(MoveStats.TimeTillJumpApex, 2f);
+            InitialJumpVelocity = Mathf.Abs(Gravity) * MoveStats.TimeTillJumpApex;
+        }
+        else
+        {
+            AdjustedJumpHeight = MoveStats.jumpHeight * MoveStats.JumpHeightCompnesationFactor;
+            Gravity = -(2f * AdjustedJumpHeight) / Mathf.Pow(MoveStats.TimeTillJumpApex, 2f);
+            InitialJumpVelocity = Mathf.Abs(Gravity) * MoveStats.TimeTillJumpApex;
         }
     }
 
@@ -131,6 +152,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Jump
+
+    
 
     private void JumpChecks()
     {
@@ -218,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
         }
         jumpBufferTimer = 0f;
         numberOfJumpsUsed = NumberOfJumpsUsed;
-        VerticalVelocity = MoveStats.InitialJumpVelocity;
+        VerticalVelocity = InitialJumpVelocity;
     }
 
     private void Jump()
@@ -236,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             if (VerticalVelocity >= 0f)
             {
                 //apex controls
-                apexPoint = Mathf.InverseLerp(MoveStats.InitialJumpVelocity, 0f, VerticalVelocity);
+                apexPoint = Mathf.InverseLerp(InitialJumpVelocity, 0f, VerticalVelocity);
 
                 if (apexPoint > MoveStats.ApexThreshold)
                 {
@@ -267,7 +290,7 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     Debug.Log("work");
-                    VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+                    VerticalVelocity += Gravity * Time.fixedDeltaTime;
                     if (isPastApexThreshold)
                     {
                         isPastApexThreshold = false;
@@ -279,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
 
             else if (!isFastFalling)
             {
-                VerticalVelocity += MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                VerticalVelocity += Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
                 Debug.Log("fastfalling");
             }
 
@@ -298,7 +321,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("reaches");
             if (fastFallTime >= MoveStats.TimeForUpwardsCancel)
             {
-                VerticalVelocity += MoveStats.Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
+                VerticalVelocity += Gravity * MoveStats.GravityOnReleaseMultiplier * Time.fixedDeltaTime;
             }
             else if (fastFallTime < MoveStats.TimeForUpwardsCancel)
             {
@@ -316,7 +339,7 @@ public class PlayerMovement : MonoBehaviour
                 isFalling = true;
             }
 
-            VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+            VerticalVelocity += Gravity * Time.fixedDeltaTime;
         }
 
         //clamp fall speed
