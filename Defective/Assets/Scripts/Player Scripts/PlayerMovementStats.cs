@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Player Movement")]
@@ -23,8 +24,10 @@ public class PlayerMovementStats : ScriptableObject
 
     [Header("Jump")]
     public float jumpHeight = 6.5f;
+    public float adrenalineJumpHeight = 8f;
     [Range(1f, 1.1f)] public float JumpHeightCompnesationFactor = 1.054f;
     public float TimeTillJumpApex = 0.35f;
+    public float adrenalineTimeTillJumpApex = 0.5f;
     [Range(0.01f, 5f)] public float GravityOnReleaseMultiplier = 2f;
     public float MaxFallSpeed = 26f;
     [Range(1, 5)] public int NumberOfJumpsAllowed = 1;
@@ -54,24 +57,8 @@ public class PlayerMovementStats : ScriptableObject
     [Range(5, 100)] public int ArcResolution = 20;
     [Range(0, 500)] public int VisualizationSteps = 90;
 
-    public float Gravity { get; private set; }
-    public float InitialJumpVelocity { get; private set; }
-    public float AdjustedJumpHeight { get; private set; }
+   
 
-    private void OnValidate()
-    {
-        CalculateValues();
-    }
-
-    private void OnEnable()
-    {
-        CalculateValues();
-    }
-
-    private void CalculateValues()
-    {
-        AdjustedJumpHeight = jumpHeight * JumpHeightCompnesationFactor;
-        Gravity = -(2f * AdjustedJumpHeight) / Mathf.Pow(TimeTillJumpApex, 2f);
-        InitialJumpVelocity = Mathf.Abs(Gravity) * TimeTillJumpApex; 
-    }
+    
+    
 }
