@@ -14,11 +14,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Collider2D feetCol;
     [SerializeField] private Collider2D bodyCol;
 
+    [Header("Camera Items")]
+    [SerializeField] private GameObject cameraFollow;
+
     private Rigidbody2D rb;
 
     //movement variables
     private Vector2 moveVelocity;
-    private bool isFacingRight;
+    public bool isFacingRight { get; set; }
 
     //collision check variables
     private RaycastHit2D groundHit;
@@ -47,11 +50,16 @@ public class PlayerMovement : MonoBehaviour
     //coyote time variables
     private float coyoteTimer;
 
+    //Camera Variables
+    private CameraFollowObject cameraFollowObject;
+
     private void Awake()
     {
         isFacingRight = true;
 
         rb = GetComponent<Rigidbody2D>();
+
+        cameraFollowObject = cameraFollow.GetComponent<CameraFollowObject>();
     }
 
     private void Update()
@@ -140,12 +148,18 @@ public class PlayerMovement : MonoBehaviour
         {
             isFacingRight = true;
             transform.Rotate(0f, 180f, 0f);
+
+            //turn the camera follow obj
+            cameraFollowObject.CallTurn();
         }
 
         else
         {
             isFacingRight = false;
             transform.Rotate(0f, -180f, 0f);
+
+            //turn the camera follow obj
+            cameraFollowObject.CallTurn();
         }
     }
 
