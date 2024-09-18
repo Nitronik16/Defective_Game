@@ -32,7 +32,7 @@ public class CameraFollowObject : MonoBehaviour
 
     public void CallTurn()
     {
-        turnCoroutine = StartCoroutine(FlipYLerp());
+        LeanTween.rotateY(gameObject, DetermineEndRotation(), flipYRotationTime).setEaseInOutSine();
     }
 
     private IEnumerator FlipYLerp()

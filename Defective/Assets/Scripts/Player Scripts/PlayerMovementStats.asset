@@ -33,7 +33,7 @@ MonoBehaviour:
   MaxFallSpeed: 26
   NumberOfJumpsAllowed: 1
   TimeForUpwardsCancel: 0.027
-  ApexThreshold: 0.894
+  ApexThreshold: 0.813
   ApexHangTime: 0.048
   JumpBufferTime: 0.125
   JumpCoyoteTime: 0.1

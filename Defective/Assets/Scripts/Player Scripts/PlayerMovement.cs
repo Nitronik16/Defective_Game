@@ -50,8 +50,12 @@ public class PlayerMovement : MonoBehaviour
     //coyote time variables
     private float coyoteTimer;
 
+    //crouch variables
+    private bool isCrouching;
+
     //Camera Variables
     private CameraFollowObject cameraFollowObject;
+    private float fallSpeedYDampingChangeThreshold;
 
     private void Awake()
     {
@@ -60,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         cameraFollowObject = cameraFollow.GetComponent<CameraFollowObject>();
+
+        fallSpeedYDampingChangeThreshold = CameraManager.Instance.fallSpeedYDampingChangeThreshold;
     }
 
     private void Update()
@@ -67,6 +73,21 @@ public class PlayerMovement : MonoBehaviour
         JumpChecks();
         CountTimers();
         CalculateGravity();
+
+        //if we are falling past a certain speed threshold
+        if (rb.velocity.y < fallSpeedYDampingChangeThreshold && !CameraManager.Instance.IsLerpYDamping && !CameraManager.Instance.LerpedFromPlayerFalling)
+        {
+            CameraManager.Instance.LerpYDamping(true);
+        }
+
+        //if we are standing still or moving up
+        if (rb.velocity.y >= 0f && !CameraManager.Instance.IsLerpYDamping && CameraManager.Instance.LerpedFromPlayerFalling)
+        {
+            //reset so it can be called again
+            CameraManager.Instance.LerpedFromPlayerFalling = false;
+
+            CameraManager.Instance.LerpYDamping(false);
+        }
     }
 
     private void FixedUpdate()
@@ -362,6 +383,12 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2 (rb.velocity.x, VerticalVelocity);
 
     }
+
+    #endregion
+
+    #region Crouch
+
+
 
     #endregion
 
