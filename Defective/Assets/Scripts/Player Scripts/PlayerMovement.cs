@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerMovementStats MoveStats;
     [SerializeField] private Collider2D feetCol;
     [SerializeField] private Collider2D bodyCol;
+    [SerializeField] private Collider2D crouchedBodyCol;
 
     [Header("Camera Items")]
     [SerializeField] private GameObject cameraFollow;
