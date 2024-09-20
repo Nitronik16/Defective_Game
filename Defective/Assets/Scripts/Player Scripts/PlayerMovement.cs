@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -50,9 +51,6 @@ public class PlayerMovement : MonoBehaviour
 
     //coyote time variables
     private float coyoteTimer;
-
-    //crouch variables
-    private bool isCrouching;
 
     //Camera Variables
     private CameraFollowObject cameraFollowObject;
@@ -392,7 +390,19 @@ public class PlayerMovement : MonoBehaviour
 
     #region Crouch
 
-
+    private void Crouch()
+    {
+        if (InputManager.CrouchIsHeld)
+        {
+            bodyCol.gameObject.SetActive(false);
+            crouchedBodyCol.gameObject.SetActive(true);
+        }
+        else
+        {
+            bodyCol.gameObject.SetActive(true);
+            crouchedBodyCol.gameObject.SetActive(false);
+        }
+    }
 
     #endregion
 

@@ -12,10 +12,12 @@ public class InputManager : MonoBehaviour
     public static bool JumpIsHeld;
     public static bool JumpWasReleased;
     public static bool AdrenalineIsHeld;
+    public static bool CrouchIsHeld;
 
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction adrenalineAction;
+    private InputAction crouchAction;
 
     private void Awake()
     {
@@ -24,6 +26,7 @@ public class InputManager : MonoBehaviour
         moveAction = PlayerInput.actions["Movement"];
         jumpAction = PlayerInput.actions["Jump"];
         adrenalineAction = PlayerInput.actions["Adrenaline"];
+        crouchAction = PlayerInput.actions["Crouch"];
     }
 
     private void Update()
@@ -35,5 +38,7 @@ public class InputManager : MonoBehaviour
         JumpWasReleased = jumpAction.WasReleasedThisFrame();
 
         AdrenalineIsHeld = adrenalineAction.IsPressed();
+
+        CrouchIsHeld = crouchAction.IsPressed();
     }
 }
