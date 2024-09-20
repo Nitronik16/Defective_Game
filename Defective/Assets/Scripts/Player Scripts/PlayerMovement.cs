@@ -65,7 +65,10 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         cameraFollowObject = cameraFollow.GetComponent<CameraFollowObject>();
+    }
 
+    private void Start()
+    {
         fallSpeedYDampingChangeThreshold = CameraManager.Instance.fallSpeedYDampingChangeThreshold;
     }
 
