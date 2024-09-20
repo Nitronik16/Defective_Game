@@ -132,9 +132,13 @@ public class PlayerMovement : MonoBehaviour
             TurnCheck(moveInput);
 
             Vector2 targetVelocity = Vector2.zero;
-            if (InputManager.AdrenalineIsHeld)
+            if (InputManager.AdrenalineIsHeld && !InputManager.CrouchIsHeld)
             {
                 targetVelocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxRunSpeed;
+            }
+            else if (InputManager.CrouchIsHeld)
+            {
+                targetVelocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxCrouchSpeed;
             }
             else
             {
@@ -284,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         //apply gravity while jumping
-        if (isJumping)
+        if (isJumping )
         {
             //Check for head bump
             if (bumpedHead)
@@ -396,11 +400,19 @@ public class PlayerMovement : MonoBehaviour
         {
             bodyCol.gameObject.SetActive(false);
             crouchedBodyCol.gameObject.SetActive(true);
+
+            //set animation for crouch
+            
+
         }
         else
         {
             bodyCol.gameObject.SetActive(true);
             crouchedBodyCol.gameObject.SetActive(false);
+
+            //revert animation away from crouch
+
+
         }
     }
 

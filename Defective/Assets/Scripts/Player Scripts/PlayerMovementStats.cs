@@ -16,6 +16,9 @@ public class PlayerMovementStats : ScriptableObject
     [Header("Adrenaline")]
     [Range(1f, 100f)] public float MaxRunSpeed = 20f;
 
+    [Header("Crouch")]
+    [Range(1f, 100f)] public float MaxCrouchSpeed = 7.5f;
+
     [Header("Ground/Collision Checks")]
     public LayerMask GroundLayer;
     public float GroundDetectionRayLength = 0.02f;
