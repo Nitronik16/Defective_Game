@@ -19,6 +19,11 @@ public class PlayerMovementStats : ScriptableObject
     [Header("Crouch")]
     [Range(1f, 100f)] public float MaxCrouchSpeed = 7.5f;
 
+    [Header("Dash")]
+    [Range(1f, 50f)] public float dashingPower = 24f; 
+    [Range(0.1f, 1f)] public float dashingTime = 0.2f;
+    [Range(0.1f, 2f)] public float dashingCooldown = 1f; 
+
     [Header("Ground/Collision Checks")]
     public LayerMask GroundLayer;
     public float GroundDetectionRayLength = 0.02f;

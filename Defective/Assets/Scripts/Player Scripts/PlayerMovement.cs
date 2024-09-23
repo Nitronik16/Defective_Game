@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Collider2D feetCol;
     [SerializeField] private Collider2D bodyCol;
     [SerializeField] private Collider2D crouchedBodyCol;
+    [SerializeField] private TrailRenderer tr; 
 
     [Header("Camera Items")]
     [SerializeField] private GameObject cameraFollow;
@@ -24,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     //movement variables
     private Vector2 moveVelocity;
     public bool isFacingRight { get; set; }
+
+    //dash variables 
+    private bool canDash = true;
+    private bool isDashing;
 
     //collision check variables
     private RaycastHit2D groundHit;
@@ -72,11 +77,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Crouch();
-        JumpChecks();
-        CountTimers();
-        CalculateGravity();
-
         //if we are falling past a certain speed threshold
         if (rb.velocity.y < fallSpeedYDampingChangeThreshold && !CameraManager.Instance.IsLerpYDamping && !CameraManager.Instance.LerpedFromPlayerFalling)
         {
@@ -91,6 +91,18 @@ public class PlayerMovement : MonoBehaviour
 
             CameraManager.Instance.LerpYDamping(false);
         }
+
+        Crouch();
+        JumpChecks();
+        CountTimers();
+        CalculateGravity();
+
+        if (InputManager.DashWasPressed && !InputManager.CrouchIsHeld)
+        {
+            StartCoroutine(Dash());
+        }
+
+      
     }
 
     private void FixedUpdate()
@@ -301,6 +313,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 isFastFalling = true;
             }
+
+            if (isDashing)
+            {
+                VerticalVelocity = -0.01f;
+            }
             
             //Gravity on Ascending
             if (VerticalVelocity >= 0f)
@@ -420,6 +437,26 @@ public class PlayerMovement : MonoBehaviour
 
 
         }
+    }
+
+    #endregion
+
+    #region Dash
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(transform.localScale.x * MoveStats.dashingPower, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(MoveStats.dashingTime);
+        tr.emitting = false;
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(MoveStats.dashingCooldown);
+        canDash = true;
     }
 
     #endregion
