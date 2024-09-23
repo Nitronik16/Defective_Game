@@ -18,6 +18,10 @@ MonoBehaviour:
   AirAcceleration: 5
   AirDeceleration: 7.9
   MaxRunSpeed: 14.123994
+  MaxCrouchSpeed: 7.5
+  dashingPower: 24
+  dashingTime: 0.2
+  dashingCooldown: 2
   GroundLayer:
     serializedVersion: 2
     m_Bits: 8
