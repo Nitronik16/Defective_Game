@@ -252,7 +252,7 @@ MonoBehaviour:
   MoveStats: {fileID: 11400000, guid: 3fe62cf2d71a85144a83f4b726b96926, type: 2}
   feetCol: {fileID: 1714751185}
   bodyCol: {fileID: 1085777537}
-  crouchedBodyCol: {fileID: 0}
+  crouchedBodyCol: {fileID: 1164617230}
   cameraFollow: {fileID: 1383139179}
   apexPoint: 0
 --- !u!1 &519420028

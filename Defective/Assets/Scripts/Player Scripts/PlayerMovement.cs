@@ -72,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        Crouch();
         JumpChecks();
         CountTimers();
         CalculateGravity();
@@ -198,6 +199,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpChecks()
     {
+        if (InputManager.CrouchIsHeld)
+        {
+            return;
+        }
+
         //When we press the jump button
         if (InputManager.JumpWasPressed)
         {
