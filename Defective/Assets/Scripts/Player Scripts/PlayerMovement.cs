@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     //dash variables 
     private bool canDash = true;
     private bool isDashing;
+    private bool dashedWhileInAir;
 
     //collision check variables
     private RaycastHit2D groundHit;
@@ -92,13 +93,23 @@ public class PlayerMovement : MonoBehaviour
             CameraManager.Instance.LerpYDamping(false);
         }
 
+        if (isDashing)
+        {
+            return;
+        }
+
         Crouch();
         JumpChecks();
         CountTimers();
         CalculateGravity();
 
-        if (InputManager.DashWasPressed && !InputManager.CrouchIsHeld)
+        if (InputManager.DashWasPressed && !InputManager.CrouchIsHeld && canDash)
         {
+            if (!isGrounded)
+            {
+                dashedWhileInAir = true;
+            }
+
             StartCoroutine(Dash());
         }
 
@@ -108,6 +119,12 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         CollisionChecks();
+        
+        if (isDashing)
+        {
+            return;
+        }
+
         Jump();
 
         if (isGrounded)
@@ -306,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         //apply gravity while jumping
-        if (isJumping )
+        if (isJumping)
         {
             //Check for head bump
             if (bumpedHead)
@@ -449,7 +466,14 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        rb.velocity = new Vector2(transform.localScale.x * MoveStats.dashingPower, 0f);
+        if (transform.rotation.y == 180)
+        {
+            rb.velocity = new Vector2(transform.localScale.x * MoveStats.dashingPower, 0f);
+        }
+        else
+        {
+            rb.velocity = new Vector2(transform.localScale.x * MoveStats.dashingPower, 0f);
+        }
         tr.emitting = true;
         yield return new WaitForSeconds(MoveStats.dashingTime);
         tr.emitting = false;
