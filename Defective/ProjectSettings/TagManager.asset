@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: black background
+    uniqueID: 2679655115
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
@@ -55,4 +58,10 @@ TagManager:
     locked: 0
   - name: lab table
     uniqueID: 1222940221
+    locked: 0
+  - name: FOREGROUND
+    uniqueID: 2395239795
+    locked: 0
+  - name: light
+    uniqueID: 1176604919
     locked: 0
