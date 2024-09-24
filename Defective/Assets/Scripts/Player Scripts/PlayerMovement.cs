@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private bool canDash = true;
     private bool isDashing;
     private bool dashedWhileInAir;
+    private int dashDirection;
 
     //collision check variables
     private RaycastHit2D groundHit;
@@ -206,6 +207,8 @@ public class PlayerMovement : MonoBehaviour
             isFacingRight = true;
             transform.Rotate(0f, 180f, 0f);
 
+            dashDirection = 1;
+
             //turn the camera follow obj
             cameraFollowObject.CallTurn();
         }
@@ -214,6 +217,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isFacingRight = false;
             transform.Rotate(0f, -180f, 0f);
+
+            dashDirection = -1;
 
             //turn the camera follow obj
             cameraFollowObject.CallTurn();
@@ -464,20 +469,12 @@ public class PlayerMovement : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
-        float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        if (transform.rotation.y == 180)
-        {
-            rb.velocity = new Vector2(transform.localScale.x * MoveStats.dashingPower, 0f);
-        }
-        else
-        {
-            rb.velocity = new Vector2(transform.localScale.x * MoveStats.dashingPower, 0f);
-        }
+        rb.velocity = new Vector2(dashDirection * MoveStats.dashingPower, 0f);
         tr.emitting = true;
         yield return new WaitForSeconds(MoveStats.dashingTime);
         tr.emitting = false;
-        rb.gravityScale = originalGravity;
+        rb.gravityScale = -.01f;
         isDashing = false;
         yield return new WaitForSeconds(MoveStats.dashingCooldown);
         canDash = true;

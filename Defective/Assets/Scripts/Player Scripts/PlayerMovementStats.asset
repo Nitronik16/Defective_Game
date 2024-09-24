@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9abb1f51f63e64d94ab5ba860f5c5b, type: 3}
   m_Name: PlayerMovementStats
   m_EditorClassIdentifier: 
-  MaxWalkSpeed: 10.1
+  MaxWalkSpeed: 3.4
   GroundAcceleration: 5
   GroundDeceleration: 20
   AirAcceleration: 5
   AirDeceleration: 7.9
-  MaxRunSpeed: 14.123994
-  MaxCrouchSpeed: 7.5
+  MaxRunSpeed: 7.8
+  MaxCrouchSpeed: 2.2
   dashingPower: 24
   dashingTime: 0.2
   dashingCooldown: 2
@@ -28,10 +28,10 @@ MonoBehaviour:
   GroundDetectionRayLength: 0.02
   HeadDetectionRayLength: 0.02
   HeadWidth: 0.75
-  jumpHeight: 2.82
-  adrenalineJumpHeight: 4.9
+  jumpHeight: 1.1
+  adrenalineJumpHeight: 2
   JumpHeightCompnesationFactor: 1.054
-  TimeTillJumpApex: 0.43
+  TimeTillJumpApex: 0.3
   adrenalineTimeTillJumpApex: 0.83
   GravityOnReleaseMultiplier: 1.74
   MaxFallSpeed: 26
