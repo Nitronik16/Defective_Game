@@ -38,6 +38,30 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: black background
+    uniqueID: 2679655115
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: ground
+    uniqueID: 1989075941
+    locked: 0
+  - name: wall
+    uniqueID: 2753833237
+    locked: 0
+  - name: assests
+    uniqueID: 1857946283
+    locked: 0
+  - name: player
+    uniqueID: 1753746601
+    locked: 0
+  - name: lab table
+    uniqueID: 1222940221
+    locked: 0
+  - name: FOREGROUND
+    uniqueID: 2395239795
+    locked: 0
+  - name: light
+    uniqueID: 1176604919
     locked: 0
