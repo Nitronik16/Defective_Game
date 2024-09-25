@@ -16,7 +16,7 @@ MonoBehaviour:
   GroundAcceleration: 5
   GroundDeceleration: 20
   AirAcceleration: 5
-  AirDeceleration: 7.9
+  AirDeceleration: 5.3
   MaxRunSpeed: 7.8
   MaxCrouchSpeed: 2.2
   dashingPower: 24
@@ -34,7 +34,7 @@ MonoBehaviour:
   TimeTillJumpApex: 0.3
   adrenalineTimeTillJumpApex: 0.83
   GravityOnReleaseMultiplier: 1.74
-  MaxFallSpeed: 26
+  MaxFallSpeed: 9.6
   NumberOfJumpsAllowed: 1
   TimeForUpwardsCancel: 0.027
   ApexThreshold: 0.813
