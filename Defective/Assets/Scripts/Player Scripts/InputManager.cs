@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
     public static bool JumpWasReleased;
     public static bool AdrenalineIsHeld;
     public static bool CrouchIsHeld;
+    public static bool CrouchWasReleased;
     public static bool DashWasPressed;
 
     private InputAction moveAction;
@@ -43,6 +44,7 @@ public class InputManager : MonoBehaviour
         AdrenalineIsHeld = adrenalineAction.IsPressed();
 
         CrouchIsHeld = crouchAction.IsPressed();
+        CrouchWasReleased = crouchAction.WasReleasedThisFrame();
 
         DashWasPressed = dashAction.WasPerformedThisFrame();
     }
