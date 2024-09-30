@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -454,7 +455,13 @@ public class PlayerMovement : MonoBehaviour
         {
             bodyCol.gameObject.SetActive(false);
             crouchedBodyCol.gameObject.SetActive(true);
+            if (!bumpedHead)
+            {
+                bodyCol.gameObject.SetActive(true);
+                crouchedBodyCol.gameObject.SetActive(false);
+            }
         }
+        else 
         {
             bodyCol.gameObject.SetActive(true);
             crouchedBodyCol.gameObject.SetActive(false);
