@@ -450,7 +450,11 @@ public class PlayerMovement : MonoBehaviour
             
 
         }
-        else
+        else if (InputManager.CrouchWasReleased && bumpedHead)
+        {
+            bodyCol.gameObject.SetActive(false);
+            crouchedBodyCol.gameObject.SetActive(true);
+        }
         {
             bodyCol.gameObject.SetActive(true);
             crouchedBodyCol.gameObject.SetActive(false);
