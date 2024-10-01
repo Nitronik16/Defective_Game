@@ -18,7 +18,11 @@ public class monsterAI : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.Translate(Vector3.right * speed);
+        if (isChasing)
+        {
+            transform.Translate(Vector3.right * speed);
+
+        }
     }
 
 }
