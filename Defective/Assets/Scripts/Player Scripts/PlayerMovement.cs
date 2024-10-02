@@ -133,10 +133,12 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             Move(MoveStats.GroundAcceleration, MoveStats.GroundDeceleration, InputManager.Movement);
+            animator.SetBool("IsJumping", false);
         }
         else
         {
             Move(MoveStats.AirAcceleration, MoveStats.AirDeceleration, InputManager.Movement);
+            animator.SetBool("IsJumping", true);
         }
     }
 
