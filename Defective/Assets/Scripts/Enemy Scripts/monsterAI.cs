@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class monsterAI : MonoBehaviour
 {
     [Range(0, 20)] public float speed;
-    
+    [SerializeField] GameObject deathScreen;
 
     // Update is called once per frame
     void Update()
@@ -20,7 +20,9 @@ public class monsterAI : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene(3);
+            col.gameObject.SetActive(false);
+            deathScreen.SetActive(true);
+
         }
         if (col.gameObject.CompareTag("Obstacle"))
         {

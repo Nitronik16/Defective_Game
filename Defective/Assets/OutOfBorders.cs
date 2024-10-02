@@ -5,11 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class OutOfBorders : MonoBehaviour
 {
+    [SerializeField] GameObject deathScreen;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene(3);
+            collision.gameObject.SetActive(false);
+            deathScreen.SetActive(true);
+
         }
     }
 }
