@@ -16,7 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Collider2D feetCol;
     [SerializeField] private Collider2D bodyCol;
     [SerializeField] private Collider2D crouchedBodyCol;
-    [SerializeField] private TrailRenderer tr; 
+    [SerializeField] private TrailRenderer tr;
+    [SerializeField] private Animator animator;
 
     [Header("Camera Items")]
     [SerializeField] private GameObject cameraFollow;
@@ -167,14 +168,20 @@ public class PlayerMovement : MonoBehaviour
             if (InputManager.AdrenalineIsHeld && !InputManager.CrouchIsHeld)
             {
                 targetVelocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxRunSpeed;
+                animator.SetBool("IsRunning", true);
+                animator.SetBool("IsWalking", false);
             }
             else if (InputManager.CrouchIsHeld)
             {
                 targetVelocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxCrouchSpeed;
+                animator.SetBool("IsRunning", false);
+                animator.SetBool("IsWalking", true);
             }
             else
             {
                 targetVelocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxWalkSpeed;
+                animator.SetBool("IsRunning", false);
+                animator.SetBool("IsWalking", true);
             }
 
             moveVelocity = Vector2.Lerp(moveVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
@@ -184,7 +191,9 @@ public class PlayerMovement : MonoBehaviour
         else if (moveInput == Vector2.zero)
         {
             moveVelocity = Vector2.Lerp(moveVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
-            rb.velocity = new Vector2(moveVelocity.x, rb.velocity.y); 
+            rb.velocity = new Vector2(moveVelocity.x, rb.velocity.y);
+            animator.SetBool("IsRunning", false);
+            animator.SetBool("IsWalking", false);
         }
                     
     }

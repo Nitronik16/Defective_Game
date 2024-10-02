@@ -12,7 +12,6 @@ public class StartBoss : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            monster.GetComponent<monsterAI>().isChasing = true;
             monster.gameObject.SetActive(true);    
         }
     }

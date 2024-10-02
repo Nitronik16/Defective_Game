@@ -1,28 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class monsterAI : MonoBehaviour
 {
     [Range(0, 20)] public float speed;
-    public bool isChasing;
-
     
 
-    // Start is called before the first frame update
-    void Start()
+    // Update is called once per frame
+    void Update()
     {
+
+        transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
         
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        if (isChasing)
+        if (col.gameObject.CompareTag("Player"))
         {
-            transform.Translate(Vector3.right * speed);
-
+            SceneManager.LoadScene(3);
+        }
+        if (col.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(col.gameObject);
         }
     }
+
+   
 
 }
