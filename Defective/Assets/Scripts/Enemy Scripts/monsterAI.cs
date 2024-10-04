@@ -26,7 +26,7 @@ public class monsterAI : MonoBehaviour
         }
         if (col.gameObject.CompareTag("Obstacle"))
         {
-            Destroy(col.gameObject);
+            col.gameObject.SetActive(false);
         }
     }
 
