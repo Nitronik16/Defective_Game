@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class DeathSceneManager : MonoBehaviour
 {
-
-    [SerializeField] Transform checkpoint;
-    [SerializeField] GameObject player;
     public void BackToMainMenu()
     {
         SceneManager.LoadScene(1);
@@ -16,6 +13,6 @@ public class DeathSceneManager : MonoBehaviour
 
     public void Restart()
     {
-        player.transform.position = checkpoint.transform.position;
+        SceneManager.LoadScene(2);
     }
 }
