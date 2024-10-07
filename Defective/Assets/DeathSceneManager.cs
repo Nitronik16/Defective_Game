@@ -14,7 +14,7 @@ public class DeathSceneManager : MonoBehaviour
     [SerializeField] GameObject[] obstacles;
     public void BackToMainMenu()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 
     public void Restart()

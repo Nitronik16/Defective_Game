@@ -19,6 +19,6 @@ public class asdfasdfadsf : MonoBehaviour
 
     public void thing()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 }
