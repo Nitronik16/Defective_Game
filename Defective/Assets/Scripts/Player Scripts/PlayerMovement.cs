@@ -457,7 +457,7 @@ public class PlayerMovement : MonoBehaviour
             bodyCol.gameObject.SetActive(false);
             crouchedBodyCol.gameObject.SetActive(true);
 
-            //set animation for crouch
+            animator.SetBool("IsCrouching", true);
             
 
         }
@@ -465,10 +465,12 @@ public class PlayerMovement : MonoBehaviour
         {
             bodyCol.gameObject.SetActive(false);
             crouchedBodyCol.gameObject.SetActive(true);
+            animator.SetBool("IsCrouching", true );
             if (!bumpedHead)
             {
                 bodyCol.gameObject.SetActive(true);
                 crouchedBodyCol.gameObject.SetActive(false);
+                animator.SetBool("IsCrouching", false);
             }
         }
         else 
@@ -476,7 +478,7 @@ public class PlayerMovement : MonoBehaviour
             bodyCol.gameObject.SetActive(true);
             crouchedBodyCol.gameObject.SetActive(false);
 
-            //revert animation away from crouch
+            animator.SetBool("IsCrouching", false);
 
 
         }
